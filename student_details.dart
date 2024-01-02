@@ -1,5 +1,10 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_project/loading_process.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class StudentsDetails extends StatefulWidget {
   const StudentsDetails({super.key});
@@ -29,6 +34,7 @@ class _StudentsDetailsState extends State<StudentsDetails> {
             }
 
             return ListView.builder(
+              itemCount: snapshot.data!.docs.length,
               itemBuilder: (context, index) {
                 Map<String, dynamic> data =
                     snapshot.data!.docs[index].data()! as Map<String, dynamic>;
@@ -89,14 +95,43 @@ class _StudentsDetailsState extends State<StudentsDetails> {
         ),
       )*/
       ,
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        String id =
-            FirebaseFirestore.instance.collection('Attendance').doc().id;
-        print("-==-=-=- $id");
-        FirebaseFirestore.instance.collection('Attendance').doc(id).set({
-          "name": "Jay New",
-          "roll_no": 20,
-        });
+      floatingActionButton: FloatingActionButton(onPressed: () async {
+        showLoadingProcess(context);
+        final ImagePicker picker = ImagePicker();
+
+        final XFile? image =
+            await picker.pickImage(source: ImageSource.gallery);
+
+        if (image != null) {
+          String fileName = "${DateTime.now().millisecondsSinceEpoch}.jpg";
+
+          Reference reference = FirebaseStorage.instance.ref().child(fileName);
+
+          UploadTask uploadTask = reference.putFile(File(image.path));
+
+          try {
+            TaskSnapshot snapshot = await uploadTask;
+
+            var imageUrl = await snapshot.ref.getDownloadURL();
+
+            print("url :   $imageUrl");
+            String id =
+                FirebaseFirestore.instance.collection('Attendance').doc().id;
+            print("-==-=-=- $id");
+            FirebaseFirestore.instance.collection('Attendance').doc(id).set({
+              "name": "photo upload New",
+              "roll_no": 20,
+              "image": "$imageUrl"
+            }).whenComplete(() {
+              hideLoadingProcess(context);
+            });
+          } on FirebaseException catch (e) {
+            print('Error --- ${e.message}');
+            hideLoadingProcess(context);
+          }
+        } else {
+          hideLoadingProcess(context);
+        }
       }),
     );
   }
