@@ -135,8 +135,12 @@
 // }
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_project/carousel_slider.dart';
+import 'package:firebase_project/chat.dart';
+import 'package:firebase_project/chat_screen%20(1).dart';
 import 'package:firebase_project/firebase_options.dart';
 import 'package:firebase_project/student_details.dart';
+import 'package:firebase_project/willpop_scop.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
@@ -165,7 +169,49 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const StudentsDetails(),
+      // home: const StudentsDetails(),
+      home: const ChatDemo(),
+      // home: const MyScreen(),
+      // home: const WillScopDemo(),
+      // home: const CarouselSliderDemo(),
+    );
+  }
+}
+
+class MyScreen extends StatefulWidget {
+  const MyScreen({super.key});
+
+  @override
+  State<MyScreen> createState() => _MyScreenState();
+}
+
+class _MyScreenState extends State<MyScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ChatScreen(
+                          receiverId: "Raj", name: "Raj", senderId: "Jay"),
+                    ));
+              },
+              child: Text("Raj")),
+          ElevatedButton(onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ChatScreen(
+                      receiverId: "Jay", name: "Jay", senderId: "Raj"),
+                ));
+          }, child: Text("Jay")),
+        ],
+      ),
     );
   }
 }
