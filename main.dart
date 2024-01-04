@@ -140,6 +140,7 @@ import 'package:firebase_project/chat.dart';
 import 'package:firebase_project/chat_screen%20(1).dart';
 import 'package:firebase_project/firebase_options.dart';
 import 'package:firebase_project/student_details.dart';
+import 'package:firebase_project/task_login.dart';
 import 'package:firebase_project/willpop_scop.dart';
 import 'package:flutter/material.dart';
 
@@ -170,8 +171,9 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       // home: const StudentsDetails(),
-      home: const ChatDemo(),
+      // home: const ChatDemo(),
       // home: const MyScreen(),
+      home: const TaskLoginPage(),
       // home: const WillScopDemo(),
       // home: const CarouselSliderDemo(),
     );
@@ -186,31 +188,180 @@ class MyScreen extends StatefulWidget {
 }
 
 class _MyScreenState extends State<MyScreen> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print("-=--==-=-=-333");
+    Future.delayed(Duration(seconds: 3), () {
+      print("-=--==-=-=-44");
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ChatScreen(
+              receiverId: "Raj",
+              name: "Raj",
+              senderId: "Jay"),
+        ),
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ChatScreen(
-                          receiverId: "Raj", name: "Raj", senderId: "Jay"),
-                    ));
-              },
-              child: Text("Raj")),
-          ElevatedButton(onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ChatScreen(
-                      receiverId: "Jay", name: "Jay", senderId: "Raj"),
-                ));
-          }, child: Text("Jay")),
-        ],
+    return DefaultTabController(
+      length: 4,
+      child: Scaffold(
+        appBar: AppBar(
+          leading: CircleAvatar(
+            radius: 10,
+            child: Image.asset(
+              ".idea/assets/image/IMG_20230522_222325_233.jpg",
+            ),
+          ),
+          centerTitle: true,
+          actions: const [
+            Icon(
+              Icons.search_rounded,
+              color: Colors.white,
+            )
+          ],
+          title: const Text(
+            // textAlign: TextAlign.center,
+            "App Bar",
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: Colors.black,
+        ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            TabBar(
+              unselectedLabelColor: Colors.black12,
+              labelColor: Colors.black,
+              tabs: [
+                Tab(
+                  child: Text("Chat"),
+                ),
+                Tab(
+                  child: Text("Popular"),
+                ),
+                Tab(
+                  child: Text("Recent"),
+                ),
+                Tab(
+                  child: Text("Update"),
+                ),
+              ],
+            ),
+            Expanded(
+              child: TabBarView(
+                children: [
+                  Center(
+                    child: Container(
+                      // margin: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.grey,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      height: 80,
+                      width: double.infinity,
+
+                      child: InkWell(
+                        onTap: () {
+                          print("-=--==-=-=-11");
+                          Future.delayed(Duration(seconds: 3), () {
+                            print("-=--==-=-=-22");
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ChatScreen(
+                                    receiverId: "Raj",
+                                    name: "Raj",
+                                    senderId: "Jay"),
+                              ),
+                            );
+                          });
+                        },
+                        child: Text("Raj", style: TextStyle(fontSize: 30)),
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ChatScreen(
+                                  receiverId: "Jay",
+                                  name: "Jay",
+                                  senderId: "Raj"),
+                            ));
+                      },
+                      child: Container(
+                        color: Colors.cyan,
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ChatScreen(
+                                  receiverId: "Sonu",
+                                  name: "Sonu",
+                                  senderId: "Yash"),
+                            ));
+                      },
+                      child: Container(
+                        color: Colors.amber,
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ChatScreen(
+                                  receiverId: "Yash",
+                                  name: "Yash",
+                                  senderId: "Sonu"),
+                            ));
+                      },
+                      child: Container(
+                        color: Colors.amber,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // ElevatedButton(
+            //     onPressed: () {
+            //
+            //     },
+            //     child: Text("Raj")),
+            // ElevatedButton(onPressed: () {
+            //
+            // }, child: Text("Jay"),),
+            // ElevatedButton(
+            //     onPressed: () {
+            //
+            //     },
+            //     child: Text("Sonu"),),
+            // ElevatedButton(
+            //     onPressed: () {
+            //
+            //     },
+            //     child: Text("Yash"),),
+          ],
+        ),
       ),
     );
   }
